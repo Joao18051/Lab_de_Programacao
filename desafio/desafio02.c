@@ -2,10 +2,11 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define MX 10
+#define MX 100
 
 void PrintArrayInt(int *, int);
 void FillArrayInt(int *, int, int);
+void SortArrayInt(int *, int, int);
 
 int main(int argc, char *argv[]){
     unsigned int *vetor_st = NULL, *vetor_nd = NULL, *inter = NULL, *rpt = NULL;
@@ -14,7 +15,7 @@ int main(int argc, char *argv[]){
     srand(time(NULL));
 
     if(argc != 3){
-        printf("\nErro.\nUse:\n\t%s <TamanhoVetor1> <TamanhoVetor2>\n", argv[0]);
+        printf("\nErro\nUse:\n\t%s <TamanhoVetor1> <TamanhoVetor2>\n\n", argv[0]);
         exit(-1);
     }
 
@@ -54,21 +55,24 @@ int main(int argc, char *argv[]){
         exit(-1);
     }
 
-    cont = 0;
     for(int i = 0; i < atoi(argv[1]); i++){
         for(int j = 0; j < atoi(argv[2]); j++){
             if(*(vetor_st +i) == *(vetor_nd +j)){
-                *(inter +cont) = *(vetor_st +i);
-                cont++;
+                *(inter +temp) = *(vetor_st +i);
+                temp++;
             }
         }
     }
+
     //Vetor intereceção sem repetição
     if(!(rpt = malloc(cont *sizeof(int)))){
         printf("\nErro, memória insuficiente\n");
         exit(-1);
     }
+
+    SortArrayInt(inter, cont, 0);
     if(cont > 1){
+        temp = 0;
         for(int i = 0; i < cont; i++){
             if(*(inter +i) != *(inter +i +1)){
                 *(rpt +temp) = *(inter +i);
@@ -82,8 +86,6 @@ int main(int argc, char *argv[]){
         printf("Não há interceção\n");
     else 
         PrintArrayInt(rpt, temp);
-    
-    PrintArrayInt(inter, cont);
 
     free(vetor_st);
     free(vetor_nd);
@@ -107,5 +109,37 @@ void PrintArrayInt(int *array, int size){
 void FillArrayInt(int *array, int size, int max){
     for(int i = 0; i < size; i++){
         *(array +i) = rand() %max;
+    }
+}
+
+void SortArrayInt(int *array, int size, int order){
+    switch (order)
+    {
+    case 0:
+        for(int i = 0; i < size; i++){
+            int subs = 0;
+            for(int j = 0; j < size -1; j++){
+                if(*(array +j) > *(array +j +1)){
+                    subs = *(array +j +1);
+                    *(array +j +1) = *(array +j);
+                    *(array +j) = subs;
+                }
+            }
+        }
+        break;
+    
+    case 1:
+        for(int i = 0; i < size; i++){
+            int subs = 0;
+            for(int j = 0; j < size -1; j++){
+                if(*(array +j) < *(array +j +1)){
+                    subs = *(array +j +1);
+                    *(array +j +1) = *(array +j);
+                    *(array +j) = subs;
+                }
+            }
+        }
+    default:
+        break;
     }
 }
