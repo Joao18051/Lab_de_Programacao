@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define MX 100
+#define MX 10
 
 void PrintArrayInt(int *, int);
 void FillArrayInt(int *, int, int);
@@ -22,7 +22,7 @@ int main(int argc, char *argv[]){
     //Relativo ao primeiro vetor
     if(!(vetor_st = malloc(atoi(argv[1]) *sizeof(int)))){
         printf("\nErro, memória insuficiente\n");
-        exit(-1);
+        exit(-2);
     }
 
     FillArrayInt(vetor_st, atoi(argv[1]), MX);
